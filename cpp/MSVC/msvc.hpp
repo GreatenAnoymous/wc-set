@@ -76,8 +76,9 @@ public:
 
 private:
     Node *random_select_next_node(Nodes &);
-    Node *nearest_select_node(Nodes &,Node* last_node);
+    Node *nearest_select_node(Grid*graph,std::set<Node*> &,std::set<Node*> &selected);
     Node *clutter_select_node(Grid*graph,std::set<Node*> &,std::set<Node*> &selected);
+    
 
 
     Node *chooseRandomNode(std::set<Node*>& nodeSet);

@@ -92,7 +92,7 @@ def grid_experiment():
     # grid_len=[5]
     data_dict=dict()
     vsize=[]
-    count=1
+    count=50
     time_data=[]
     ratio_data=[]
     for m in grid_len:
@@ -105,9 +105,9 @@ def grid_experiment():
             msvc=MSVC.MSVC()
             t0=time.time()
         # sol=msvc.findMaxPathDominatedVertexSetWithBinarySearch(graph)
-            # sol=msvc.findMaximalPathDominatedSet(graph)
+            sol=msvc.findMaximalPathDominatedSet(graph)
             
-            sol=msvc.findMaximumPathDominatedSet(graph,-1)
+            # sol=msvc.findMaximumPathDominatedSet(graph,-1)
             t1=time.time()
             # ratio_sum+=msvc.evaluate_ratio(graph,sol,None
             if len(sol)>vm:
@@ -127,7 +127,7 @@ def grid_experiment():
     data_dict["vsize"]=vsize
     data_dict["time"]=time_data
     data_dict["ratio"]=ratio_data
-    with open("./data/8connected/grid_experiment.json", "w") as f:
+    with open("./data/4connected/grid_experiment_improved.json", "w") as f:
         json.dump(data_dict,f)
 
 
@@ -226,11 +226,11 @@ def check_unpp_wf2(pType="orz201d"):
 
 
 def test():
-    m=45
-    n=47
+    m=49
+    n=49
     graph=Grids.Grid("./maps/orz201d.map")
     # graph=Grids.Grid(24,24,[])
-    # graph=Grids.Grid8Connected("./maps/30x30.map")
+    # graph=Grids.Grid("./maps/30x30.map")
     msvc=MSVC.MSVC()
     # sol=msvc.findMaxPathDominatedVertexSetWithBinarySearch(graph)
     # sol=msvc.findMaximalPathDominatedSet(graph)
@@ -273,13 +273,13 @@ def test():
 
 
 
-    plt.savefig("orz201d.svg",bbox_inches="tight",pad_inches=0.05)
+    # plt.savefig("orz201d.svg",bbox_inches="tight",pad_inches=0.05)
     # Show the plot
     plt.show()
 if __name__ == "__main__":
 
     # test()
-    # grid_experiment()
+    grid_experiment()
     # test32x32()
     # generate_json("60x60")
     # generate_short_instance_json(15)
@@ -287,7 +287,7 @@ if __name__ == "__main__":
     # generate_density_instance_json()
     # check_wf()
     # test_unlabeled()
-    evaluate_map_maxial_vertices("Shanghai_0_256")
+    # evaluate_map_maxial_vertices("Shanghai_0_256")
     # precompute_distance("hrt002d")
     # check_unpp_wf2()
     # generate_gauss_json("hrt002d")

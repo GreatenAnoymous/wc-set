@@ -362,25 +362,46 @@ Node * MSVC::random_select_next_node(Nodes & nodes){
 }
 
 
-Node* MSVC::nearest_select_node(Nodes &candidates, Node *last_node){
-    if (candidates.empty()) {
-        return nullptr;
-    }
-
-    Node* nearest_node = candidates[0];
-    int min_distance = nearest_node->manhattanDist(last_node);
-
-    for (size_t i = 1; i < candidates.size(); ++i) {
-        Node* candidate = candidates[i];
-        int distance = candidate->manhattanDist(last_node);
-
-        if (distance < min_distance) {
-            nearest_node = candidate;
-            min_distance = distance;
+Node* MSVC::nearest_select_node(Grid*graph,std::set<Node*> &candidates,std::set<Node*> &selected){
+    // prioritize selection
+    int x,y;    
+    for(auto c:selected){
+        //find updown_nodes
+        int x=c->pos.x;
+        int y=c->pos.y+1;
+        if(graph->existNode(x,y)!=false){
+            auto node=graph->getNode(x,y);
+            if(candidates.find(node)!=candidates.end() and selected.find(node)==selected.end()) return node;
+        }
+        x=c->pos.x;
+        y=c->pos.y-1;
+        if(graph->existNode(x,y)!=false){
+            auto node=graph->getNode(x,y);
+            if(candidates.find(node)!=candidates.end() and selected.find(node)==selected.end()) return node;
         }
     }
 
-    return nearest_node;
+    for(auto c:selected){
+          // find leftright_nodes
+        x=c->pos.x-1;
+        y=c->pos.y;
+        if(graph->existNode(x,y)!=false){
+            auto node=graph->getNode(x,y);
+            if(candidates.find(node)!=candidates.end() and selected.find(node)==selected.end()) return node;
+        }
+
+        x=c->pos.x+1;
+        y=c->pos.y;
+        if(graph->existNode(x,y)!=false){
+            auto node=graph->getNode(x,y);
+            if(candidates.find(node)!=candidates.end() and selected.find(node)==selected.end()) return node;
+        }
+    }
+
+    //otherwise select a node closest
+    return clutter_select_node(graph, candidates,selected);
+
+
 }
 
 Node*MSVC::clutter_select_node(Grid* graph,std::set<Node*> &candidates,std::set<Node*> &selected){
@@ -530,14 +551,16 @@ Nodes MSVC::findMaximalPathDominatedSet(Grid *graph){
     while(true){
         if(checkIfMaximalPathDominatedSet(graph,candidates,vertexSet)==true) break; // already maximal
         // choose randomly a candidate to add to the vertexSet
-        auto n=chooseRandomNode(candidates);
+        // auto n=chooseRandomNode(candidates);
+        auto n=nearest_select_node(graph,candidates,vertexSet);
         // auto n=clutter_select_node(graph,candidates,vertexSet);
-        std::cout<<"add node ("<<n->pos.x<<","<<n->pos.y<<") to the set"<<std::endl;
+        // std::cout<<"add node ("<<n->pos.x<<","<<n->pos.y<<") to the set"<<std::endl;
         vertexSet.insert(n);
         candidates.erase(n);
         result.push_back(n);
     }
     
+    std::cout<<"size="<<result.size()<<std::endl;
     return result;
 }
 
