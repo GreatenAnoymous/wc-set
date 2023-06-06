@@ -88,7 +88,7 @@ def precompute_distance(map_name:str):
 
 
 def grid_experiment():
-    grid_len=[5,10,15,20,25,30,35,40,45,50]
+    grid_len=[10,20,30,40,50,60,70,80,90,100]
     # grid_len=[5]
     data_dict=dict()
     vsize=[]
@@ -127,7 +127,7 @@ def grid_experiment():
     data_dict["vsize"]=vsize
     data_dict["time"]=time_data
     data_dict["ratio"]=ratio_data
-    with open("./data/4connected/grid_experiment_improved.json", "w") as f:
+    with open("./data/4connected/grid_experiment_iimproved.json", "w") as f:
         json.dump(data_dict,f)
 
 
